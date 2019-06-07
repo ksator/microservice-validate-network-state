@@ -1,0 +1,15 @@
+---
+  - name: Create output directory for each device
+    file:
+      path: "{{save_dir}}"
+      state: directory
+
+  - name: load and commit configuration
+    juniper_junos_config:
+      provider: "{{ credentials }}"
+      load: "{{ load_type }}"
+      src: "{{ junos_conf_dir }}/{{ inventory_hostname }}.conf"
+      diff: true
+      diffs_file: "{{ save_dir }}/configuration_diff.log"
+      check: true
+      commit: true

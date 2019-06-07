@@ -1,0 +1,14 @@
+- name: Deploy Junos configuration
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  pre_tasks:
+    - include_vars: "{{ playbook_dir }}/repository.cfg"
+    - include_vars: "inputs/type_to_use_when_loading_configuration.yml"
+
+  roles:
+    - Juniper.junos
+    - load-configuration
+
+
