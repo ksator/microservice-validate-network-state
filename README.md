@@ -1,3 +1,5 @@
+![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/ksator/load_junos_configuration.svg) ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/ksator/load_junos_configuration.svg) ![Docker Pulls](https://img.shields.io/docker/pulls/ksator/load_junos_configuration.svg) ![MicroBadger Layers (tag)](https://img.shields.io/microbadger/layers/ksator/load_junos_configuration/latest.svg) ![MicroBadger Size (tag)](https://img.shields.io/microbadger/image-size/ksator/load_junos_configuration/latest.svg)  
+
 # Description 
 
 This microservice loads Junos configuration files on devices  
