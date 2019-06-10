@@ -21,6 +21,8 @@ $ docker pull ksator/load_junos_configuration
 Verify
 ```
 $ docker images ksator/load_junos_configuration  
+REPOSITORY                        TAG                 IMAGE ID            CREATED             SIZE
+ksator/load_junos_configuration   latest              f9b73fa145c2        7 minutes ago       543MB
 ```
 
 ## Create the microservice inputs
@@ -59,8 +61,8 @@ ansible_ssh_pass=juniper123
 
 Junos configuration files example:   
 ```
-$ ls inputs/configuration_files/
-demo-qfx10k2-14.conf  demo-qfx10k2-15  demo-qfx5110-10  demo-qfx5110-9
+$ lls inputs/configuration_files/
+demo-qfx10k2-14.conf  demo-qfx10k2-15.conf  demo-qfx5110-10.conf  demo-qfx5110-9.conf
 ```
 ```
 $ more inputs/configuration_files/demo-qfx10k2-14.conf 
@@ -96,6 +98,40 @@ This will instanciate a container, execute the service, stop the container and r
 ```
 $ docker run -it --rm -v ${PWD}/inputs:/inputs -v ${PWD}/outputs:/outputs ksator/load_junos_configuration
 
+Load Junos configuration
+
+PLAY [Deploy Junos configuration] *************************************************************************************************************************************************************************************************************************************************
+
+TASK [include_vars] ***************************************************************************************************************************************************************************************************************************************************************
+ok: [demo-qfx5110-9]
+ok: [demo-qfx5110-10]
+ok: [demo-qfx10k2-14]
+ok: [demo-qfx10k2-15]
+
+TASK [include_vars] ***************************************************************************************************************************************************************************************************************************************************************
+ok: [demo-qfx5110-9]
+ok: [demo-qfx5110-10]
+ok: [demo-qfx10k2-14]
+ok: [demo-qfx10k2-15]
+
+TASK [load-configuration : Create output directory for each device] ***************************************************************************************************************************************************************************************************************
+changed: [demo-qfx10k2-14]
+changed: [demo-qfx5110-9]
+changed: [demo-qfx5110-10]
+changed: [demo-qfx10k2-15]
+
+TASK [load-configuration : load and commit configuration] *************************************************************************************************************************************************************************************************************************
+ok: [demo-qfx10k2-14]
+changed: [demo-qfx10k2-15]
+changed: [demo-qfx5110-9]
+changed: [demo-qfx5110-10]
+
+PLAY RECAP ************************************************************************************************************************************************************************************************************************************************************************
+demo-qfx10k2-14            : ok=4    changed=1    unreachable=0    failed=0   
+demo-qfx10k2-15            : ok=4    changed=2    unreachable=0    failed=0   
+demo-qfx5110-10            : ok=4    changed=2    unreachable=0    failed=0   
+demo-qfx5110-9             : ok=4    changed=2    unreachable=0    failed=0   
+
 ```
 List the containers.  
 The container doesnt exist anymore
@@ -113,8 +149,13 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 Here's the output generated
 ```
-$ tree outputs/
+$ ls outputs/
+demo-qfx10k2-14  demo-qfx10k2-15  demo-qfx5110-10  demo-qfx5110-9
 ```
 ```
-$ more outputs/
+$ more outputs/demo-qfx10k2-15/configuration_diff.log 
+
+[edit system services extension-service request-response grpc clear-text]
+-       port 32768;
++       port 32766;
 ```
