@@ -9,6 +9,6 @@
 
   roles:
     - Juniper.junos
-    - load-configuration
+    - test-configuration
 
 

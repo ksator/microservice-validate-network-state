@@ -1,5 +1,5 @@
 # cd /
-echo "Load Junos configuration"
+echo Ttest Junos configuration"
 
 if [ -f "inputs/hosts.ini" ]
 then

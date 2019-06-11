@@ -15,4 +15,4 @@ RUN pip install -r requirements.txt  && \
     ansible-galaxy install -r requirements.ansible.yaml
 
 
-ENTRYPOINT sh ./microservice_load_junos_configuration.sh 
+ENTRYPOINT sh ./microservice_test_junos_configuration.sh 
