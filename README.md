@@ -1,5 +1,34 @@
 Microservice to validate network state (when devices run Junos). Based on Ansible and Docker 
 
+```
+$ tree inputs
+inputs
+├── audit_option.yaml
+├── hosts.ini
+└── host_vars
+    ├── demo-qfx5110-11
+    │   └── validation.yml
+    └── demo-qfx5110-12
+        └── validation.yml
+
+```
+```
+$ more inputs/hosts.ini 
+[spines]
+demo-qfx10k2-14   ansible_host=172.25.90.67
+demo-qfx10k2-15   ansible_host=172.25.90.68
+demo-qfx5110-9    ansible_host=172.25.90.63
+demo-qfx5110-10   ansible_host=172.25.90.64
+
+[leaves]
+demo-qfx5110-11   ansible_host=172.25.90.65
+demo-qfx5110-12   ansible_host=172.25.90.66
+
+[all:vars]
+netconf_port=830
+ansible_ssh_user=ansible
+ansible_ssh_pass=juniper123
+```
 
 ```
 $  more inputs/audit_option.yaml 
@@ -9,17 +38,7 @@ audit:
     loose: True
 ```
 ```
-$ tree host_vars/
-host_vars/
-├── demo-qfx5110-11
-│   └── validation.yml
-└── demo-qfx5110-12
-    └── validation.yml
-
-2 directories, 2 files
-```
-```
-$ more host_vars/demo-qfx5110-11/validation.yml 
+$ more inputs/host_vars/demo-qfx5110-11/validation.yml 
 # used to validate management ports are reachable from your server
 
 management_ports: 
@@ -143,7 +162,7 @@ vtep:
 
 ```
 ```
-$ more host_vars/demo-qfx5110-12/validation.yml 
+$ more inputs/host_vars/demo-qfx5110-12/validation.yml 
 # used to validate management ports are reachable from your server
 
 management_ports: 
