@@ -1,8 +1,13 @@
 # Description
 
-This microservice validates network state (when devices run Junos). Based on Ansible and Docker 
+This microservice validates network state (when devices run Junos).  
+It is based on Ansible and Docker 
 
-It connects to the network devices, collect the actual state of the network devices, and compare it to the desired state described by a human or a program.  
+It
+- connects to the network devices
+- collects the actual state of the network devices
+- compare the actual state to the desired state described by a human or a program  
+
 No commit is done on the devices.  
 
 This microservice:
@@ -36,12 +41,11 @@ Create this structure:
      - ansible_host: IP of the device
      - ansible_ssh_user: Username to use for the connection
      - ansible_ssh_pass: Password to use for the connection
-    - a file `audit_option.yaml` to indicate the ansible behavior when a test fails
-      - by the defaut, when an ansible task fails for an ansible host, that ansible host is removed from the ansible inventory for the next tasks of the playbook. 
+    - a file `audit_option.yaml` to indicate the ansible behavior when a test fails. By the defaut, when an ansible task fails for an ansible host, that ansible host is removed from the ansible inventory for the next tasks of the playbook. 
       - if you set the audit.mode.loose to False, you keep the Ansible default behavior
       - if you prefer to keep that faulty ansible host in the inventory during the next tests, set the audit.mode.loose to True.   
-    - a directory `host_vars` 
-      - a subdirectory for each device, that has one or several yaml files with the device specific variables  
+    - a directory `host_vars` with a subdirectory for each device
+      - the device subdirectory  has one or several yaml files with the device specific variables  
 
 Example
 
@@ -84,28 +88,24 @@ audit:
 ```
 ```
 $ more inputs/host_vars/demo-qfx5110-11/validation.yml 
-# used to validate management ports are reachable from your server
 
+# used to validate management ports are reachable from your server
 management_ports: 
     - 22
     - 830
-
 
 # used to validate device model 
 # compare collected device model VS expected device model (described below)
 # examples QFX5100-48S, qfx5110-32q, QFX10002-36Q
 device_model: qfx5110-32q
 
-
 # used to validate SW release
 # compare collected SW release VS expected SW release (described below)
 sw_release: 18.2R1-S4.1
 
-
 # used to validate Interfaces status
 # interfaces between spines and leaves are expected to be administratively up and operationaly up
 # non used interfaces are expected to be administratively down
-
 interfaces:
   admin_up_and_oper_up:
     - et-0/0/0 
@@ -119,12 +119,10 @@ interfaces:
     - xe-0/0/6:2
     - ae100
  
-
 # used to Validate physical topology
 # compare the actual LLDP neighbors vs the expected ones (described below)
 # can be used to validate how devices are connected between them (connection between spines and leaves as example)
 # can be used to validate how servers running LLDP are connected to Junos devices (connection of a server to an access port of a leaf as example)
-
 LLDP_neighbors:
     - local_interface: et-0/0/0
       remote_name: demo-qfx10k2-14
@@ -135,9 +133,7 @@ LLDP_neighbors:
     - local_interface: et-0/0/3
       remote_name: demo-qfx5110-10 
 
-
 # used to validate these VLANs exist
-
 vlans:
   - name: tenant1_dmz
   - name: tenant1_trust
@@ -149,13 +145,11 @@ vlans:
   - name: tenant3_trust
   - name: tenant3_untrust
 
-
 # used to validate BGP
 # works with both EBGP and IBGP
 # validate the device can ping his BGP peers
 # validate sessions state is Established
 # validate the number of routes learnt from `peer_ip` is greater than a certain value 
-
 BGP_neighbors:
     - peer_ip: 10.0.0.1
       number_of_routes_learnt_greater_than: 2
@@ -174,9 +168,7 @@ BGP_neighbors:
     - peer_ip: 172.16.0.12 
       number_of_routes_learnt_greater_than: 2
 
-
 # used to validate the device can run these PING (ttl=1)
-
 PING:
   - local_ip: 10.0.0.21
     peer_ip: 10.0.0.1
@@ -195,41 +187,32 @@ PING:
   - local_ip: 172.16.0.13
     peer_ip: 172.16.0.12
 
-
-
 # Used to validate VTEP endpoints address. Used for VXLAN data plane validation 
 # Use output of `show interfaces vtep` command and check if below remote endpoint address are presents
-
 vtep:
   - address: "10.0.0.21"
   - address: "10.0.0.22"
-
-
 ```
 ```
 $ more inputs/host_vars/demo-qfx5110-12/validation.yml 
-# used to validate management ports are reachable from your server
 
+# used to validate management ports are reachable from your server
 management_ports: 
     - 22
     - 830
-
 
 # used to validate device model 
 # compare collected device model VS expected device model (described below)
 # examples QFX5100-48S, qfx5110-32q, QFX10002-36Q
 device_model: qfx5110-32q
 
-
 # used to validate SW release
 # compare collected SW release VS expected SW release (described below)
 sw_release: 17.3R3.9
 
-
 # used to validate Interfaces status
 # interfaces between spines and leaves are expected to be administratively up and operationaly up
 # non used interfaces are expected to be administratively down
-
 interfaces:
   admin_up_and_oper_up:
     - et-0/0/0 
@@ -243,12 +226,10 @@ interfaces:
     - xe-0/0/6:2
     - ae100
  
-
 # used to Validate physical topology
 # compare the actual LLDP neighbors vs the expected ones (described below)
 # can be used to validate how devices are connected between them (connection between spines and leaves as example)
 # can be used to validate how servers running LLDP are connected to Junos devices (connection of a server to an access port of a leaf as example)
-
 LLDP_neighbors:
     - local_interface: et-0/0/0
       remote_name: demo-qfx10k2-14
@@ -259,9 +240,7 @@ LLDP_neighbors:
     - local_interface: et-0/0/3
       remote_name: demo-qfx5110-10 
 
-
 # used to validate these VLANs exist
-
 vlans:
   - name: tenant1_dmz
   - name: tenant1_trust
@@ -273,13 +252,11 @@ vlans:
   - name: tenant3_trust
   - name: tenant3_untrust
 
-
 # used to validate BGP
 # works with both EBGP and IBGP
 # validate the device can ping his BGP peers
 # validate sessions state is Established
 # validate the number of routes learnt from `peer_ip` is greater than a certain value 
-
 BGP_neighbors:
     - peer_ip: 10.0.0.1
       number_of_routes_learnt_greater_than: 2
@@ -298,9 +275,7 @@ BGP_neighbors:
     - peer_ip: 172.16.0.14 
       number_of_routes_learnt_greater_than: 2
 
-
 # used to validate the device can run these PING (ttl=1)
-
 PING:
   - local_ip: 10.0.0.22
     peer_ip: 10.0.0.1
@@ -319,15 +294,11 @@ PING:
   - local_ip: 172.16.0.15
     peer_ip: 172.16.0.14
 
-
-
 # Used to validate VTEP endpoints address. Used for VXLAN data plane validation 
 # Use output of `show interfaces vtep` command and check if below remote endpoint address are presents
-
 vtep:
   - address: "10.0.0.21"
   - address: "10.0.0.22"
-
 ```
 
 
