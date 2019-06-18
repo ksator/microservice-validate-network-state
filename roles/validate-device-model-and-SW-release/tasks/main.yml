@@ -1,0 +1,28 @@
+---
+   - name: Retrieve junos facts from devices
+     junos_facts:
+      provider: "{{ credentials }}"
+      gather_subset: hardware
+     register: junos
+
+   - name: Print some junos facts
+     debug:
+       msg: "device {{ junos.ansible_facts.ansible_net_hostname }} is a {{ junos.ansible_facts.ansible_net_model }} running junos version {{ junos.ansible_facts.ansible_net_version }}"
+
+   - name: validate device model
+     assert:
+       that:
+       - junos.ansible_facts.ansible_net_model == "{{ device_model | lower }}"
+       msg: "device {{ junos.ansible_facts.ansible_net_hostname }} is NOT a {{ device_model }}, it is a {{ junos.ansible_facts.ansible_net_model }}"
+     ignore_errors: "{{ audit.mode.loose }}" 
+     when: (device_model) is defined 
+
+   - name: validate software version 
+     assert:
+       that:
+       - junos.ansible_facts.ansible_net_version == "{{ sw_release }}"
+       msg: "device {{ junos.ansible_facts.ansible_net_hostname }} is NOT running Junos release {{ sw_release  }}, it is running {{ junos.ansible_facts.ansible_net_version }}"
+     ignore_errors: "{{ audit.mode.loose }}"
+     when: (sw_release) is defined
+
+

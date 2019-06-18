@@ -1,0 +1,15 @@
+
+---
+   - name: ping from Junos devices
+     junos_ping:
+        provider: "{{ credentials }}"
+        acceptable_percent_loss: 10
+        count: 10
+        dest_ip: "{{ item.peer_ip }}"
+        source_ip: "{{ item.local_ip }}"
+        ttl: 1
+     with_items:
+       - "{{ PING }}"
+     when: (PING) is defined
+     ignore_errors: "{{ audit.mode.loose }}"
+

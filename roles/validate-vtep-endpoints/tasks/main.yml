@@ -1,0 +1,15 @@
+  - name: collect interfaces vtep
+    junos_command:
+      provider: "{{ credentials }}"
+      display: 'text'
+      commands:
+       - "show interfaces vtep"
+    register: "show_interfaces_vtep"
+
+  - name: validate VTEP remote endpoints address
+    assert:
+       that:
+       - "'{{ item.address }}' in show_interfaces_vtep['stdout'][0]"
+    with_items: "{{ vtep }}"
+    when: (item) is defined 
+    ignore_errors: "{{ audit.mode.loose }}"

@@ -1,0 +1,11 @@
+---
+    - name: Check management ports reachability from your server 
+      wait_for: 
+        host: "{{ ansible_host }}" 
+        port: "{{ item }}" 
+        timeout: 5
+      with_items:
+      - "{{ management_ports }}"
+      ignore_errors: "{{ audit.mode.loose }}"
+      when: (management_ports) is defined
+

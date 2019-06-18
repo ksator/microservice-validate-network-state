@@ -1,0 +1,50 @@
+---
+
+   - name: validate interfaces status is admin up 
+     junos_command:
+      provider: "{{ credentials }}"
+      display: 'xml'
+      commands:
+       - "show interfaces terse {{ item }}"
+      waitfor:
+       - "result[0]['rpc-reply']['interface-information']['physical-interface']['admin-status'] eq up"
+      retries: 3
+      interval: 3
+     with_items:
+     - "{{ interfaces.admin_up_and_oper_up }}"
+     - "{{ interfaces.admin_up }}"
+     when: (item is defined) 
+     ignore_errors: "{{ audit.mode.loose }}"
+
+
+   - name: validate interfaces status is operationaly up 
+     junos_command:
+      provider: "{{ credentials }}"
+      display: 'xml'
+      commands:
+       - "show interfaces terse {{ item }}"
+      waitfor:
+       - "result[0]['rpc-reply']['interface-information']['physical-interface']['oper-status'] eq up"
+      retries: 3
+      interval: 3
+     with_items:
+     - "{{ interfaces.admin_up_and_oper_up }}"
+     when: (item is defined) 
+     ignore_errors: "{{ audit.mode.loose }}"
+
+
+   - name: validate interfaces status is admin down
+     junos_command:
+      provider: "{{ credentials }}"
+      display: 'xml'
+      commands:
+       - "show interfaces terse {{ item }}"
+      waitfor:
+       - "result[0]['rpc-reply']['interface-information']['physical-interface']['admin-status'] eq down"
+      retries: 3
+      interval: 3
+     with_items:
+     - "{{ interfaces.admin_down }}"
+     when: (item is defined) 
+     ignore_errors: "{{ audit.mode.loose }}"
+

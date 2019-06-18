@@ -1,5 +1,5 @@
 # cd /
-echo "test Junos configuration"
+echo "Validate Junos devices state"
 
 if [ -f "inputs/hosts.ini" ]
 then
