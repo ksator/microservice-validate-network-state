@@ -40,7 +40,7 @@ This microservice:
 - stops the container
 - removes the container
 
-The Docker image is `ksator/validate-network-state`
+The Docker image is [ksator/validate-network-state](https://cloud.docker.com/repository/docker/ksator/validate-network-state)
 
 # Usage
 
