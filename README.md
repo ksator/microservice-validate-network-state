@@ -6,7 +6,7 @@ It is based on Ansible and Docker
 It
 - connects to the network devices
 - collects the actual state of the network devices
-- compare the actual state to the desired state described by a human or a program  
+- compare the actual state with the desired state described by a human or a program in the `inputs` directory 
 
 No commit is done on the devices.  
 
@@ -17,6 +17,10 @@ This microservice:
 - removes the container
 
 The Docker image is `ksator/validate-network-state`
+
+This microservice currently supports these features: 
+- 
+- 
 
 # Usage
 
@@ -47,8 +51,7 @@ Create this structure:
     - a directory `host_vars` with a subdirectory for each device
       - the device subdirectory  has one or several yaml files with the device specific variables  
 
-Example
-
+`Inputs` directory structure example" 
 ```
 $ tree inputs
 inputs
@@ -61,6 +64,7 @@ inputs
         └── validation.yml
 
 ```
+Ansible inventory example:
 ```
 $ more inputs/hosts.ini 
 [spines]
@@ -78,7 +82,7 @@ netconf_port=830
 ansible_ssh_user=ansible
 ansible_ssh_pass=juniper123
 ```
-
+Indicate the Ansible behavior when an Ansible task fails for an Ansible host 
 ```
 $  more inputs/audit_option.yaml 
 ---
@@ -86,6 +90,9 @@ audit:
   mode:
     loose: True
 ```
+Indicate the device specific variables for each Ansible host you want to test  
+
+Example for the device demo-qfx5110-11
 ```
 $ more inputs/host_vars/demo-qfx5110-11/validation.yml 
 
@@ -193,6 +200,7 @@ vtep:
   - address: "10.0.0.21"
   - address: "10.0.0.22"
 ```
+Example for the device demo-qfx5110-12 
 ```
 $ more inputs/host_vars/demo-qfx5110-12/validation.yml 
 
@@ -300,7 +308,7 @@ vtep:
   - address: "10.0.0.21"
   - address: "10.0.0.22"
 ```
-
+## Run the microservice
 
 ```
 $ docker run -it --rm -v ${PWD}/inputs/host_vars:/host_vars -v ${PWD}/inputs:/inputs -v ${PWD}/outputs:/outputs ksator/validate-network-state
