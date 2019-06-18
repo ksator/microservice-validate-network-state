@@ -1,3 +1,9 @@
+![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/ksator/validate-network-state.svg) 
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/ksator/validate-network-state.svg) 
+![Docker Pulls](https://img.shields.io/docker/pulls/ksator/validate-network-state.svg) 
+![MicroBadger Size (tag)](https://img.shields.io/microbadger/image-size/ksator/validate-network-state/latest.svg) 
+![MicroBadger Layers (tag)](https://img.shields.io/microbadger/layers/ksator/validate-network-state/latest.svg)
+
 # Description
 
 This microservice validates network state (when devices run Junos).  
