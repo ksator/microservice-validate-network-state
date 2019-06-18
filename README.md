@@ -3,13 +3,31 @@
 This microservice validates network state (when devices run Junos).  
 It is based on Ansible and Docker 
 
-It
+It:
 - connects to the network devices
 - collects the actual state of the network devices
-- compare the actual state with the desired state described by a human or a program in the `inputs` directory 
+- compare the actual state with the desired state (described by a human or a program in the `inputs` directory) 
 
 No commit is done on the devices.  
 
+This microservice currently supports these features with Junos devices: 
+- validate management ip address is reachable
+- validate management ports are reachable
+- validate device model 
+- validate software release 
+- validate interfaces status (both admin status and operational status) 
+- validate physical topology
+- validate VLANs configuration
+- validate BGP (works with both EBGP and IBGP)  
+  - validate the device can ping his BGP peers
+  - validate sessions state is Established
+  - validate the number of routes received by peers is greater than a certain value 
+- validate ip reachability (running PING on Junos devices, from source addresses located in the device to destination addresses not located in the device)
+- validate VTEP endpoints address (used for VXLAN data plane validation)
+
+The desired state is described in the `inputs` directory.  
+If you do not provide a description of the desired state for a feature, the tests related to this feature will be skept. As example if you do not describe the physical topology, the microservice will skip the physical topology validation  
+  
 This microservice:
 - instanciates a container
 - executes the service
@@ -17,10 +35,6 @@ This microservice:
 - removes the container
 
 The Docker image is `ksator/validate-network-state`
-
-This microservice currently supports these features: 
-- 
-- 
 
 # Usage
 
@@ -51,7 +65,7 @@ Create this structure:
     - a directory `host_vars` with a subdirectory for each device
       - the device subdirectory  has one or several yaml files with the device specific variables  
 
-`Inputs` directory structure example" 
+`Inputs` directory structure example:  
 ```
 $ tree inputs
 inputs
